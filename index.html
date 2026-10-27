@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#173d83" />
+  <meta name="description" content="Saarthi Play Public School student and administration portal." />
+  <title>Saarthi Play Public School | School Portal</title>
+  <!-- The styles.css file will contain the full responsive visual design. -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <!-- ==================== PUBLIC / SIGN-IN SCREEN ==================== -->
+  <main id="login-screen" class="login-screen" aria-labelledby="login-title">
+    <section class="login-brand-panel" aria-label="School information">
+      <img class="school-logo" src="schoollogo.jpeg" alt="Saarthi Play Public School logo" />
+      <p class="eyebrow">LEARN • GROW • SHINE</p>
+      <h1>Saarthi Play Public School</h1>
+      <p class="school-location">Alipur, Delhi – 36</p>
+      <p class="brand-message">One place for school updates, learning, attendance and fee information.</p>
+      <div class="school-year-chip" aria-label="Academic session">Academic Session 2026–27</div>
+    </section>
+
+    <section class="login-panel" aria-labelledby="login-title">
+      <div class="login-panel-heading">
+        <p class="eyebrow">WELCOME TO SPPS</p>
+        <h2 id="login-title">Sign in to your portal</h2>
+        <p>Choose the portal you need to continue.</p>
+      </div>
+
+      <div class="login-mode-switch" role="group" aria-label="Choose account type">
+        <button type="button" class="mode-button is-active" id="student-mode-button" data-login-mode="student" aria-pressed="true">Student / Parent</button>
+        <button type="button" class="mode-button" id="admin-mode-button" data-login-mode="admin" aria-pressed="false">Teacher / Admin</button>
+      </div>
+
+      <!-- Student sign-in: options are populated from the authenticated student directory. -->
+      <form id="student-login-form" class="login-form" autocomplete="on">
+        <label for="student-class">Class</label>
+        <select id="student-class" name="className" required>
+          <option value="">Select class</option>
+          <option value="Play Group">Play Group</option>
+          <option value="Nursery">Nursery</option>
+          <option value="LKG">LKG</option>
+          <option value="UKG">UKG</option>
+          <option value="Class 1">Class 1</option>
+          <option value="Class 2">Class 2</option>
+          <option value="Class 3">Class 3</option>
+          <option value="Class 4">Class 4</option>
+          <option value="Class 5">Class 5</option>
+        </select>
+
+        <label for="student-name">Student name</label>
+        <select id="student-name" name="studentName" required disabled>
+          <option value="">Select a class first</option>
+        </select>
+
+        <p class="form-help">Student names should be loaded only after the app verifies access to the school directory.</p>
+        <button type="submit" class="primary-button">Open student portal <span aria-hidden="true">→</span></button>
+        <p class="form-message" id="student-login-message" role="status" aria-live="polite"></p>
+      </form>
+
+      <!-- Admin sign-in: credentials must be verified by the server, not in public HTML. -->
+      <form id="admin-login-form" class="login-form is-hidden" autocomplete="on">
+        <label for="admin-id">Admin / staff ID</label>
+        <input id="admin-id" name="adminId" type="text" placeholder="Enter your staff ID" autocomplete="username" required />
+
+        <label for="admin-password">Password</label>
+        <div class="password-field">
+          <input id="admin-password" name="password" type="password" placeholder="Enter your password" autocomplete="current-password" required />
+          <button type="button" id="toggle-password" class="text-button" aria-label="Show password" aria-pressed="false">Show</button>
+        </div>
+        <p class="form-help">Admin access, student data and reports must be protected by server-side authentication.</p>
+        <button type="submit" class="primary-button">Sign in to administration <span aria-hidden="true">→</span></button>
+        <p class="form-message" id="admin-login-message" role="status" aria-live="polite"></p>
+      </form>
+
+      <footer class="login-footer">
+        <span>© <span id="footer-year">2026</span> Saarthi Play Public School</span>
+        <span class="secure-label"><span aria-hidden="true">●</span> School portal</span>
+      </footer>
+    </section>
+  </main>
+
+  <!-- ==================== APPLICATION SHELL ==================== -->
+  <!-- Hidden until the server confirms a valid student or staff session. -->
+  <div id="app-shell" class="app-shell is-hidden">
+    <aside id="sidebar" class="sidebar" aria-label="Main navigation">
+      <div class="sidebar-brand">
+        <img src="schoollogo.jpeg" alt="" class="sidebar-logo" />
+        <div>
+          <strong>Saarthi Play</strong>
+          <span>Public School</span>
+        </div>
+        <button type="button" id="close-sidebar" class="icon-button mobile-only" aria-label="Close navigation">×</button>
+      </div>
+
+      <div class="portal-user-card">
+        <div class="avatar" id="user-avatar" aria-hidden="true">SP</div>
+        <div class="portal-user-copy">
+          <strong id="portal-user-name">School user</strong>
+          <span id="portal-user-role">Student portal</span>
+        </div>
+      </div>
+
+      <nav class="navigation-list" id="main-navigation">
+        <p class="navigation-heading">OVERVIEW</p>
+        <button type="button" class="nav-item is-active" data-page="dashboard"><span class="nav-icon" aria-hidden="true">⌂</span>Dashboard</button>
+        <button type="button" class="nav-item" data-page="announcements"><span class="nav-icon" aria-hidden="true">▤</span>Announcements <span id="announcement-nav-count" class="nav-count is-hidden">0</span></button>
+
+        <p class="navigation-heading">LEARNING</p>
+        <button type="button" class="nav-item" data-page="homework"><span class="nav-icon" aria-hidden="true">✎</span>Homework & classwork</button>
+        <button type="button" class="nav-item" data-page="timetable"><span class="nav-icon" aria-hidden="true">▦</span>Class timetable</button>
+        <button type="button" class="nav-item" data-page="materials"><span class="nav-icon" aria-hidden="true">▧</span>Study material</button>
+        <button type="button" class="nav-item" data-page="exams"><span class="nav-icon" aria-hidden="true">✓</span>Exams & syllabus</button>
+        <button type="button" class="nav-item" data-page="results"><span class="nav-icon" aria-hidden="true">▥</span>Marks & report cards</button>
+
+        <p class="navigation-heading">SCHOOL RECORDS</p>
+        <button type="button" class="nav-item" data-page="attendance"><span class="nav-icon" aria-hidden="true">◷</span>Attendance</button>
+        <button type="button" class="nav-item" data-page="fees"><span class="nav-icon" aria-hidden="true">₹</span>Fee information</button>
+        <button type="button" class="nav-item" data-page="calendar"><span class="nav-icon" aria-hidden="true">▣</span>Holidays & celebrations</button>
+        <button type="button" class="nav-item" data-page="gallery"><span class="nav-icon" aria-hidden="true">▧</span>School gallery</button>
+
+        <div id="admin-navigation-group" class="is-hidden">
+          <p class="navigation-heading">ADMINISTRATION</p>
+          <button type="button" class="nav-item" data-page="students"><span class="nav-icon" aria-hidden="true">♙</span>Student directory</button>
+          <button type="button" class="nav-item" data-page="manage-attendance"><span class="nav-icon" aria-hidden="true">◷</span>Manage attendance</button>
+          <button type="button" class="nav-item" data-page="manage-fees"><span class="nav-icon" aria-hidden="true">₹</span>Manage fees & payments</button>
+          <button type="button" class="nav-item" data-page="manage-content"><span class="nav-icon" aria-hidden="true">✚</span>Manage school content</button>
+          <button type="button" class="nav-item" data-page="settings"><span class="nav-icon" aria-hidden="true">⚙</span>App settings</button>
+        </div>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="academic-year-card">
+          <span class="small-label">ACADEMIC SESSION</span>
+          <strong id="academic-session-label">2026–27</strong>
+        </div>
+        <button type="button" id="logout-button" class="logout-button"><span aria-hidden="true">↪</span> Sign out</button>
+      </div>
+    </aside>
+
+    <div class="app-main-column">
+      <header class="topbar">
+        <button type="button" id="open-sidebar" class="icon-button mobile-only" aria-label="Open navigation">☰</button>
+        <div class="breadcrumb"><span>Saarthi Play Public School</span><span aria-hidden="true">/</span><strong id="current-page-label">Dashboard</strong></div>
+        <div class="topbar-actions">
+          <button type="button" class="icon-button" id="notification-button" aria-label="Notifications">♧<span class="notification-dot is-hidden" id="notification-dot"></span></button>
+          <div class="topbar-session"><span class="status-dot" aria-hidden="true"></span><span id="topbar-role-label">School portal</span></div>
+        </div>
+      </header>
+
+      <main id="main-content" class="page-content" tabindex="-1">
+        <!-- DASHBOARD -->
+        <section class="page-section is-active" id="page-dashboard" data-page-section="dashboard">
+          <div class="page-heading-row">
+            <div>
+              <p class="eyebrow">SCHOOL AT A GLANCE</p>
+              <h1 id="dashboard-greeting">Welcome to SPPS</h1>
+              <p id="dashboard-subtitle" class="muted-text">Your school information, all in one place.</p>
+            </div>
+            <div class="date-pill" id="current-date-label">Today</div>
+          </div>
+
+          <div id="admin-dashboard-summary" class="stat-grid is-hidden">
+            <article class="stat-card stat-blue"><span class="stat-label">Total students</span><strong id="stat-total-students">—</strong><span class="stat-footnote">Across active classes</span></article>
+            <article class="stat-card stat-green"><span class="stat-label">Present today</span><strong id="stat-present-today">—</strong><span class="stat-footnote">Attendance entries</span></article>
+            <article class="stat-card stat-orange"><span class="stat-label">Fee balance</span><strong id="stat-fee-balance">—</strong><span class="stat-footnote">From imported school records</span></article>
+            <article class="stat-card stat-purple"><span class="stat-label">Active notices</span><strong id="stat-active-notices">—</strong><span class="stat-footnote">Published to the portal</span></article>
+          </div>
+
+          <div id="student-dashboard-summary" class="stat-grid">
+            <article class="stat-card stat-blue"><span class="stat-label">Class</span><strong id="student-stat-class">—</strong><span class="stat-footnote">Your current class</span></article>
+            <article class="stat-card stat-green"><span class="stat-label">Attendance</span><strong id="student-stat-attendance">—</strong><span class="stat-footnote">For the selected session</span></article>
+            <article class="stat-card stat-orange"><span class="stat-label">Fee status</span><strong id="student-stat-fees">—</strong><span class="stat-footnote">Latest school record</span></article>
+            <article class="stat-card stat-purple"><span class="stat-label">Upcoming exams</span><strong id="student-stat-exams">—</strong><span class="stat-footnote">Published exam schedule</span></article>
+          </div>
+
+          <div class="dashboard-grid">
+            <section class="content-card announcements-card">
+              <div class="card-heading-row"><div><h2>Latest announcements</h2><p class="muted-text">Important updates from school</p></div><button type="button" class="inline-link" data-go-page="announcements">View all →</button></div>
+              <div id="dashboard-announcements" class="empty-state"><span class="empty-icon" aria-hidden="true">▤</span><strong>No announcements yet</strong><p>Published school announcements will appear here.</p></div>
+            </section>
+            <section class="content-card quick-links-card">
+              <div class="card-heading-row"><div><h2>Quick access</h2><p class="muted-text">Jump to common sections</p></div></div>
+              <div class="quick-link-grid">
+                <button type="button" class="quick-link" data-go-page="homework"><span class="quick-icon quick-blue">✎</span><span>Homework</span><span class="quick-arrow">→</span></button>
+                <button type="button" class="quick-link" data-go-page="attendance"><span class="quick-icon quick-green">◷</span><span>Attendance</span><span class="quick-arrow">→</span></button>
+                <button type="button" class="quick-link" data-go-page="fees"><span class="quick-icon quick-orange">₹</span><span>Fee information</span><span class="quick-arrow">→</span></button>
+                <button type="button" class="quick-link" data-go-page="materials"><span class="quick-icon quick-purple">▧</span><span>Study material</span><span class="quick-arrow">→</span></button>
+              </div>
+            </section>
+            <section class="content-card upcoming-card">
+              <div class="card-heading-row"><div><h2>Upcoming dates</h2><p class="muted-text">Exams, holidays and celebrations</p></div><button type="button" class="inline-link" data-go-page="calendar">School calendar →</button></div>
+              <div id="dashboard-upcoming-dates" class="empty-state compact-empty"><strong>No upcoming dates published</strong><p>New dates will be shown here when the school adds them.</p></div>
+            </section>
+            <section class="content-card admin-shortcuts-card is-hidden" id="admin-shortcuts-card">
+              <div class="card-heading-row"><div><h2>Administration shortcuts</h2><p class="muted-text">Manage the school's daily records</p></div></div>
+              <div class="admin-shortcuts-grid">
+                <button type="button" class="secondary-button" data-go-page="students">Manage student directory</button>
+                <button type="button" class="secondary-button" data-go-page="manage-attendance">Take attendance</button>
+                <button type="button" class="secondary-button" data-go-page="manage-fees">Update fee records</button>
+                <button type="button" class="secondary-button" data-go-page="settings">Customize portal</button>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <!-- ANNOUNCEMENTS -->
+        <section class="page-section" id="page-announcements" data-page-section="announcements">
+          <div class="page-heading-row"><div><p class="eyebrow">SCHOOL UPDATES</p><h1>Announcements</h1><p class="muted-text">Circulars, reminders and important school news.</p></div><button type="button" class="primary-button admin-only is-hidden" data-open-editor="announcement">+ Add announcement</button></div>
+          <div id="announcements-list" class="content-list empty-state"><strong>No announcements published</strong><p>New announcements from the school will appear here.</p></div>
+        </section>
+
+        <!-- HOMEWORK -->
+        <section class="page-section" id="page-homework" data-page-section="homework">
+          <div class="page-heading-row"><div><p class="eyebrow">CLASSROOM</p><h1>Homework & classwork</h1><p class="muted-text">Assignments and daily classwork by class and subject.</p></div><button type="button" class="primary-button admin-only is-hidden" data-open-editor="homework">+ Add homework</button></div>
+          <div class="filter-bar"><label for="homework-class-filter">Class</label><select id="homework-class-filter"><option value="all">All available classes</option><option>Play Group</option><option>Nursery</option><option>LKG</option><option>UKG</option><option>Class 1</option><option>Class 2</option><option>Class 3</option><option>Class 4</option><option>Class 5</option></select><label for="homework-subject-filter">Subject</label><select id="homework-subject-filter"><option value="all">All subjects</option><option>English</option><option>Hindi</option><option>Maths</option><option>EVS</option><option>Science</option><option>Social Studies</option><option>Computer</option><option>Other</option></select></div>
+          <div id="homework-list" class="content-list empty-state"><strong>No homework posted</strong><p>Homework and classwork added by staff will appear here.</p></div>
+        </section>
+
+        <!-- TIMETABLE -->
+        <section class="page-section" id="page-timetable" data-page-section="timetable">
+          <div class="page-heading-row"><div><p class="eyebrow">DAILY ROUTINE</p><h1>Class timetable</h1><p class="muted-text">View the period schedule for each class.</p></div><button type="button" class="primary-button admin-only is-hidden" data-open-editor="timetable">+ Edit timetable</button></div>
+          <div class="filter-bar"><label for="timetable-class-filter">Choose class</label><select id="timetable-class-filter"><option>Play Group</option><option>Nursery</option><option>LKG</option><option>UKG</option><option>Class 1</option><option>Class 2</option><option>Class 3</option><option>Class 4</option><option>Class 5</option></select><label for="timetable-day-filter">Day</label><select id="timetable-day-filter"><option>Monday</option><option>Tuesday</option><option>Wednesday</option><option>Thursday</option><option>Friday</option><option>Saturday</option></select></div>
+          <div id="timetable-content" class="content-card table-card"><div class="empty-state"><strong>Timetable not published</strong><p>The administrator can add and customize periods, subjects and timings.</p></div></div>
+        </section>
+
+        <!-- STUDY MATERIAL -->
+        <section class="page-section" id="page-materials" data-page-section="materials">
+          <div class="page-heading-row"><div><p class="eyebrow">LEARNING LIBRARY</p><h1>Study material</h1><p class="muted-text">Worksheets, notes, revision files and learning resources.</p></div><button type="button" class="primary-button admin-only is-hidden" data-open-editor="material">+ Add material</button></div>
+          <div class="filter-bar"><label for="material-class-filter">Class</label><select id="material-class-filter"><option value="all">All classes</option><option>Play Group</option><option>Nursery</option><option>LKG</option><option>UKG</option><option>Class 1</option><option>Class 2</option><option>Class 3</option><option>Class 4</option><option>Class 5</option></select><label for="material-type-filter">Type</label><select id="material-type-filter"><option value="all">All material</option><option>Worksheet</option><option>Notes</option><option>Revision</option><option>Reading</option><option>Other</option></select></div>
+          <div id="materials-list" class="resource-grid empty-state"><strong>No study material uploaded</strong><p>Resources uploaded by teachers will be listed here.</p></div>
+        </section>
+
+        <!-- EXAMS & SYLLABUS -->
+        <section class="page-section" id="page-exams" data-page-section="exams">
+          <div class="page-heading-row"><div><p class="eyebrow">ASSESSMENTS</p><h1>Exams & syllabus</h1><p class="muted-text">Exam schedules, syllabus and preparation reminders.</p></div><button type="button" class="primary-button admin-only is-hidden" data-open-editor="exam">+ Add exam / syllabus</button></div>
+          <div id="exams-list" class="content-list empty-state"><strong>No exam schedule published</strong><p>Check here for exam dates and class-wise syllabus.</p></div>
+        </section>
+
+        <!-- MARKS & REPORT CARDS -->
+        <section class="page-section" id="page-results" data-page-section="results">
+          <div class="page-heading-row"><div><p class="eyebrow">STUDENT PROGRESS</p><h1>Marks & report cards</h1><p class="muted-text">Published marks and reports for the selected student.</p></div><button type="button" class="primary-button admin-only is-hidden" data-open-editor="result">+ Add marks</button></div>
+          <div id="results-content" class="content-card"><div class="empty-state"><strong>No report card published</strong><p>Report cards will appear after the school publishes results.</p></div></div>
+        </section>
+
+        <!-- STUDENT ATTENDANCE VIEW -->
+        <section class="page-section" id="page-attendance" data-page-section="attendance">
+          <div class="page-heading-row"><div><p class="eyebrow">ATTENDANCE RECORD</p><h1>Attendance</h1><p class="muted-text">Review attendance records for the selected student.</p></div></div>
+          <div class="stat-grid attendance-summary-grid"><article class="stat-card stat-green"><span class="stat-label">Present</span><strong id="attendance-present-count">—</strong></article><article class="stat-card stat-orange"><span class="stat-label">Absent</span><strong id="attendance-absent-count">—</strong></article><article class="stat-card stat-blue"><span class="stat-label">Attendance rate</span><strong id="attendance-rate">—</strong></article></div>
+          <div class="content-card table-card" id="student-attendance-table"><div class="empty-state"><strong>Attendance record unavailable</strong><p>Attendance appears here after the school has recorded it.</p></div></div>
+        </section>
+
+        <!-- STUDENT FEE VIEW -->
+        <section class="page-section" id="page-fees" data-page-section="fees">
+          <div class="page-heading-row"><div><p class="eyebrow">FEE INFORMATION</p><h1>Fees</h1><p class="muted-text">View fee totals, payments received and balance recorded by the school.</p></div></div>
+          <div class="stat-grid fee-summary-grid"><article class="stat-card stat-blue"><span class="stat-label">Fee total</span><strong id="student-fee-total">—</strong></article><article class="stat-card stat-green"><span class="stat-label">Amount received</span><strong id="student-fee-paid">—</strong></article><article class="stat-card stat-orange"><span class="stat-label">Balance</span><strong id="student-fee-balance">—</strong></article></div>
+          <div class="content-card table-card" id="student-fee-breakdown"><div class="empty-state"><strong>Fee details not available</strong><p>Fee records will be visible after a student session is verified.</p></div></div>
+          <p class="notice-note"><strong>Note:</strong> This page shows school-recorded information only. For a payment or balance correction, please contact the school office.</p>
+        </section>
+
+        <!-- CALENDAR / HOLIDAYS -->
+        <section class="page-section" id="page-calendar" data-page-section="calendar">
+          <div class="page-heading-row"><div><p class="eyebrow">DATES TO REMEMBER</p><h1>Holidays & celebrations</h1><p class="muted-text">School holidays, celebrations, events and important dates.</p></div><button type="button" class="primary-button admin-only is-hidden" data-open-editor="calendar">+ Add date</button></div>
+          <div id="calendar-list" class="event-grid empty-state"><strong>School calendar not published</strong><p>Upcoming holidays and celebrations will appear here.</p></div>
+        </section>
+
+        <!-- SCHOOL GALLERY -->
+        <section class="page-section" id="page-gallery" data-page-section="gallery">
+          <div class="page-heading-row"><div><p class="eyebrow">SCHOOL MOMENTS</p><h1>Photo gallery</h1><p class="muted-text">Photos from celebrations, activities and school events.</p></div><button type="button" class="primary-button admin-only is-hidden" data-open-editor="gallery">+ Add photos</button></div>
+          <div id="gallery-list" class="gallery-grid empty-state"><strong>No photos published</strong><p>School event photos will appear here when approved by the administration.</p></div>
+        </section>
+
+        <!-- ADMIN: STUDENT DIRECTORY -->
+        <section class="page-section admin-page" id="page-students" data-page-section="students">
+          <div class="page-heading-row"><div><p class="eyebrow">ADMINISTRATION</p><h1>Student directory</h1><p class="muted-text">Manage student profiles and school records.</p></div><button type="button" class="primary-button" data-open-editor="student">+ Add student</button></div>
+          <div class="admin-tools-row"><label class="search-field" for="student-search"><span aria-hidden="true">⌕</span><input id="student-search" type="search" placeholder="Search by name or admission number" /></label><label for="directory-class-filter">Class</label><select id="directory-class-filter"><option value="all">All classes</option><option>Play Group</option><option>Nursery</option><option>LKG</option><option>UKG</option><option>Class 1</option><option>Class 2</option><option>Class 3</option><option>Class 4</option><option>Class 5</option></select><button type="button" class="secondary-button" id="export-students-button">Export filtered data</button></div>
+          <div class="content-card table-card" id="student-directory-table"><div class="empty-state"><strong>Student records are not loaded</strong><p>After staff authentication, load the approved student directory from the protected school database or use the import tool in App settings.</p></div></div>
+        </section>
+
+        <!-- ADMIN: ATTENDANCE -->
+        <section class="page-section admin-page" id="page-manage-attendance" data-page-section="manage-attendance">
+          <div class="page-heading-row"><div><p class="eyebrow">ADMINISTRATION</p><h1>Manage attendance</h1><p class="muted-text">Record and correct class attendance by date.</p></div><button type="button" class="primary-button" id="save-attendance-button">Save attendance</button></div>
+          <div class="filter-bar"><label for="attendance-class-select">Class</label><select id="attendance-class-select"><option>Play Group</option><option>Nursery</option><option>LKG</option><option>UKG</option><option>Class 1</option><option>Class 2</option><option>Class 3</option><option>Class 4</option><option>Class 5</option></select><label for="attendance-date">Date</label><input id="attendance-date" type="date" /></div>
+          <div class="content-card table-card" id="attendance-register"><div class="empty-state"><strong>Choose a class and date</strong><p>Students will be listed here after the directory loads.</p></div></div>
+        </section>
+
+        <!-- ADMIN: FEES -->
+        <section class="page-section admin-page" id="page-manage-fees" data-page-section="manage-fees">
+          <div class="page-heading-row"><div><p class="eyebrow">ADMINISTRATION</p><h1>Manage fees & payments</h1><p class="muted-text">Review imported balances, record verified payments and export reports.</p></div><button type="button" class="primary-button" data-open-editor="payment">+ Record payment</button></div>
+          <div class="admin-tools-row"><label class="search-field" for="fees-search"><span aria-hidden="true">⌕</span><input id="fees-search" type="search" placeholder="Search student / admission number" /></label><label for="fees-class-filter">Class</label><select id="fees-class-filter"><option value="all">All classes</option><option>Play Group</option><option>Nursery</option><option>LKG</option><option>UKG</option><option>Class 1</option><option>Class 2</option><option>Class 3</option><option>Class 4</option><option>Class 5</option></select><button type="button" class="secondary-button" id="export-fees-button">Export fee report</button></div>
+          <div class="content-card table-card" id="fees-register"><div class="empty-state"><strong>Fee records are not loaded</strong><p>Import or sync fee data through the protected admin workflow before viewing student balances.</p></div></div>
+        </section>
+
+        <!-- ADMIN: CONTENT MANAGEMENT -->
+        <section class="page-section admin-page" id="page-manage-content" data-page-section="manage-content">
+          <div class="page-heading-row"><div><p class="eyebrow">ADMINISTRATION</p><h1>Manage school content</h1><p class="muted-text">Publish announcements, homework, resources, exam schedules, events and photos.</p></div></div>
+          <div class="management-grid">
+            <button type="button" class="management-card" data-open-editor="announcement"><span class="management-icon quick-blue">▤</span><strong>Announcement</strong><span>Create or edit a school notice</span></button>
+            <button type="button" class="management-card" data-open-editor="homework"><span class="management-icon quick-green">✎</span><strong>Homework</strong><span>Post classwork and homework</span></button>
+            <button type="button" class="management-card" data-open-editor="material"><span class="management-icon quick-purple">▧</span><strong>Study material</strong><span>Upload a worksheet or resource</span></button>
+            <button type="button" class="management-card" data-open-editor="exam"><span class="management-icon quick-orange">✓</span><strong>Exam & syllabus</strong><span>Publish dates and syllabus details</span></button>
+            <button type="button" class="management-card" data-open-editor="calendar"><span class="management-icon quick-blue">▣</span><strong>School calendar</strong><span>Add holidays and celebrations</span></button>
+            <button type="button" class="management-card" data-open-editor="gallery"><span class="management-icon quick-green">▧</span><strong>Photo gallery</strong><span>Publish approved event photos</span></button>
+            <button type="button" class="management-card" data-open-editor="timetable"><span class="management-icon quick-purple">▦</span><strong>Timetable</strong><span>Manage classes, subjects and periods</span></button>
+            <button type="button" class="management-card" data-open-editor="result"><span class="management-icon quick-orange">▥</span><strong>Marks & report cards</strong><span>Enter and publish student results</span></button>
+          </div>
+          <div id="content-editor-mount" class="content-editor-mount" aria-live="polite"></div>
+        </section>
+
+        <!-- ADMIN: SETTINGS & DATA IMPORT -->
+        <section class="page-section admin-page" id="page-settings" data-page-section="settings">
+          <div class="page-heading-row"><div><p class="eyebrow">PORTAL CONFIGURATION</p><h1>App settings</h1><p class="muted-text">Customize school details, class options and portal appearance.</p></div><button type="button" class="primary-button" id="save-settings-button">Save settings</button></div>
+          <div class="settings-layout">
+            <section class="content-card settings-card"><div class="card-heading-row"><div><h2>School identity</h2><p class="muted-text">These details appear throughout the portal.</p></div></div>
+              <form id="school-settings-form" class="settings-form">
+                <label for="settings-school-name">School name</label><input id="settings-school-name" name="schoolName" type="text" value="Saarthi Play Public School" required />
+                <label for="settings-address">School address</label><input id="settings-address" name="address" type="text" value="Alipur, Delhi – 36" />
+                <label for="settings-session">Academic session</label><input id="settings-session" name="session" type="text" value="2026–27" required />
+                <label for="settings-primary-colour">Primary theme colour</label><input id="settings-primary-colour" name="primaryColour" type="color" value="#173d83" />
+                <label for="settings-accent-colour">Accent colour</label><input id="settings-accent-colour" name="accentColour" type="color" value="#e88719" />
+                <label for="settings-logo-file">Update school logo</label><input id="settings-logo-file" name="logoFile" type="file" accept="image/png,image/jpeg,image/webp" />
+                <p class="form-help">Only authorized administrators should be able to save site-wide settings.</p>
+              </form>
+            </section>
+
+            <section class="content-card settings-card"><div class="card-heading-row"><div><h2>Student & fee data import</h2><p class="muted-text">Import the school workbook through the protected admin process.</p></div></div>
+              <div class="import-warning"><strong>Protect student privacy</strong><p>The workbook contains personal student and family details. Do not publish it as a public website file. Import it after admin sign-in and store records in a protected database.</p></div>
+              <form id="student-workbook-form" class="upload-form">
+                <label for="student-workbook">Excel workbook (.xlsx)</label>
+                <input id="student-workbook" name="workbook" type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+                <p class="form-help">Expected source: class sheets from the SPPS Fee Details 2026–27 workbook. The importer should map admission number, student name, class, fee total, payments received and balance, while ignoring blank/non-student rows.</p>
+                <button type="submit" class="secondary-button">Validate and import workbook</button>
+                <p class="form-message" id="workbook-import-message" role="status" aria-live="polite"></p>
+              </form>
+              <div class="data-source-status"><span class="status-dot" aria-hidden="true"></span><div><strong id="data-source-label">No protected data source connected</strong><p id="data-source-description">Student records will remain unavailable until a secure import or server connection is configured.</p></div></div>
+            </section>
+
+            <section class="content-card settings-card"><div class="card-heading-row"><div><h2>Portal permissions</h2><p class="muted-text">Set who can view and edit school information.</p></div></div>
+              <div class="permission-list">
+                <div class="permission-row"><div><strong>Student / parent portal</strong><p>View assigned classwork, fee information, attendance and published results.</p></div><span class="permission-tag">View assigned records</span></div>
+                <div class="permission-row"><div><strong>Teacher account</strong><p>Manage permitted classes, homework and attendance.</p></div><span class="permission-tag">Limited editing</span></div>
+                <div class="permission-row"><div><strong>Administrator</strong><p>Manage school settings, student directory, fee records, attendance and published content.</p></div><span class="permission-tag">Full administration</span></div>
+              </div>
+              <p class="form-help">Permissions must be enforced by the server for every read and write operation, not only by hiding buttons.</p>
+            </section>
+          </div>
+        </section>
+
+        <footer class="app-footer"><span>© <span id="app-footer-year">2026</span> Saarthi Play Public School</span><span>Academic Session 2026–27</span></footer>
+      </main>
+    </div>
+  </div>
+
+  <!-- Accessible modal container for add/edit forms; populated by app.js. -->
+  <dialog id="editor-dialog" class="editor-dialog" aria-labelledby="editor-dialog-title">
+    <div class="dialog-header"><div><p class="eyebrow">SCHOOL PORTAL</p><h2 id="editor-dialog-title">Edit item</h2></div><button type="button" id="close-editor-dialog" class="icon-button" aria-label="Close dialog">×</button></div>
+    <form id="editor-form" method="dialog">
+      <div id="editor-form-fields" class="editor-form-fields"></div>
+      <div class="dialog-actions"><button type="button" id="cancel-editor-button" class="secondary-button">Cancel</button><button type="submit" id="submit-editor-button" class="primary-button">Save</button></div>
+    </form>
+  </dialog>
+
+  <div class="toast-region" id="toast-region" aria-live="polite" aria-atomic="true"></div>
+  <div class="sidebar-backdrop is-hidden" id="sidebar-backdrop"></div>
+
+  <!-- app.js will implement authentication calls, navigation, data loading and editor actions. -->
+  <script src="app.js" defer></script>
+</body>
+</html>
